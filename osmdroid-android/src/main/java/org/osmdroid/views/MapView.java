@@ -1147,7 +1147,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 			// adjust the center point in respect to the scaling point
 			if (scaleDiffInt != 0) {
 				Matrix m = new Matrix();
-				m.setScale(1 / mMultiTouchScale, 1 / mMultiTouchScale, mMultiTouchScalePoint.x,
+				m.setScale(1 / mMultiTouccrollTo((int) pts[0], hScalePoint.x,
 						mMultiTouchScalePoint.y);
 				m.postRotate(-mapOrientation, mProjection.getScreenRect().centerX(), mProjection
 						.getScreenRect().centerY());
@@ -1712,20 +1712,4 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		 * @param c
 		 *            the application environment
 		 * @param attrs
-		 *            the set of attributes fom which to extract the layout parameters values
-		 */
-		public LayoutParams(final Context c, final AttributeSet attrs) {
-			super(c, attrs);
-			this.geoPoint = new GeoPoint(0, 0);
-			this.alignment = BOTTOM_CENTER;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public LayoutParams(final ViewGroup.LayoutParams source) {
-			super(source);
-		}
-	}
-
-}
+		 *            the set of attributes fom which to extract t
