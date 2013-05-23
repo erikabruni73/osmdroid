@@ -90,6 +90,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 
 	/** Handles map scrolling */
 	private final Scroller mScroller;
+	private boolean mIsFlinging;
 	private final AtomicInteger mTargetZoomLevel = new AtomicInteger();
 	private final AtomicBoolean mIsAnimating = new AtomicBoolean(false);
 
@@ -313,6 +314,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		final int worldSize_2 = TileSystem.MapSize(this.getZoomLevel(false)) / 2;
 		if (getAnimation() == null || getAnimation().hasEnded()) {
 			logger.debug("StartScroll");
+			mIsFlinging = false;
 			mScroller.startScroll(getScrollX(), getScrollY(),
 					coords.x - worldSize_2 - getScrollX(), coords.y - worldSize_2 - getScrollY(),
 					500);
@@ -341,6 +343,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 
 		if (newZoomLevel != curZoomLevel) {
 		    mScroller.forceFinished(true);
+			mIsFlinging = false;
 		}
 
 		this.mZoomLevel = newZoomLevel;
@@ -961,6 +964,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 				scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
 				// This will facilitate snapping-to any Snappable points.
 				setZoomLevel(mZoomLevel);
+				mIsFlinging = false;
 			} else {
 				scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
 			}
@@ -1489,7 +1493,13 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		}
 
 		@Override
-		public Point toPixels(final IGeoPoint in, final Point out) {
+		public Point toPixels(final IGeoPoint
+			// Stop scrolling if we are in the middle of a fling!
+			if (mIsFlinging) {
+				mScroller.abortAnimation();
+				mIsFlinging = false;
+			}
+t in, final Point out) {
 			return toMapPixels(in, out);
 		}
 
@@ -1512,7 +1522,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		}
 
 		@Override
-		public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX,
+		publicIsFlinging = truepublic boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX,
 				final float velocityY) {
 			if (MapView.this.getOverlayManager()
 					.onFling(e1, e2, velocityX, velocityY, MapView.this)) {
