@@ -616,7 +616,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 	 * Set the map to limit it's scrollable view to the specified BoundingBoxE6. Note this does not
 	 * limit zooming so it will be possible for the user to zoom to an area that is larger than the
 	 * limited area.
-	 * 
+	 *
 	 * @param boundingBox
 	 *            A lat/long bounding box to limit scrolling to, or null to remove any scrolling
 	 *            limitations
@@ -1039,24 +1039,16 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		// Save the current canvas matrix
 		c.save();
 
-		if (mMultiTouchScale == 1.0f) {
-			c.translate(getWidth() / 2, getHeight() / 2);
+		c.translate(getWidth() / 2, getHeight() / 2);
+		c.scale(mMultiTouchScale, mMultiTouchScale, mMultiTouchScalePoint.x,
+				mMultiTouchScalePoint.y);
 
-			/* rotate Canvas */
-			c.rotate(mapOrientation, mProjection.getScreenRect().centerX(), mProjection
+		/* rotate Canvas */), mProjection
 					.getScreenRect().centerY());
 		} else {
 			c.getMatrix(mMatrix);
-			mMatrix.postTranslate(getWidth() / 2, getHeight() / 2);
-			mMatrix.preScale(mMultiTouchScale, mMultiTouchScale, mMultiTouchScalePoint.x,
-					mMultiTouchScalePoint.y);
-
-			/* rotate Canvas */
-			mMatrix.preRotate(mapOrientation, mProjection.getScreenRect().centerX(), mProjection
-					.getScreenRect().centerY());
-
-			c.setMatrix(mMatrix);
-		}
+			mMatri
+				.centerY());
 
 		/* Draw background */
 		// c.drawColor(mBackgroundColor);
@@ -1077,7 +1069,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 
 	/**
 	 * Returns true if the safe drawing canvas is being used.
-	 * 
+	 *
 	 * @see {@link ISafeCanvas}
 	 */
 	public boolean isUsingSafeCanvas() {
@@ -1086,7 +1078,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 
 	/**
 	 * Sets whether the safe drawing canvas is being used.
-	 * 
+	 *
 	 * @see {@link ISafeCanvas}
 	 */
 	public void setUseSafeCanvas(boolean useSafeCanvas) {
@@ -1118,8 +1110,11 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		super.onAnimationEnd();
 	}
 
-	/**
-	 * Check mAnimationListener.isAnimating() to determine if view is animating. Useful for overlays
+	/**=============================================
+
+	@Override
+	protected void onAnimationStart() {
+		m
 	 * to avoid recalculating during an animation sequence.
 	 *
 	 * @return boolean indicating whether view is animating.
@@ -1133,14 +1128,21 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 	// ===========================================================
 
 	@Override
-	public Object getDraggableObjectAtPoint(final PointInfo pt) {
-		mMultiTouchScalePoint.x = pt.getX() + getScrollX() - (this.getWidth() / 2);
+	public Object getDraggableObjectAtPoint(final PointInfo pt) {g.
+	 */
+	public boolean isAnimating() {
+		return mIsAnimating.get();
+	}
+
+	// =
 		mMultiTouchScalePoint.y = pt.getY() + getScrollY() - (this.getHeight() / 2);
 		return this;
 	}
 
+	@Override==========================================================
+
 	@Override
-	public void getPositionAndScale(final Object obj, final PositionAndScale objPosAndScaleOut) {
+	public Object getDragga
 		objPosAndScaleOut.set(0, 0, true, mMultiTouchScale, false, 0, 0, false, 0);
 	}
 
@@ -1154,8 +1156,8 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 			// If we are changing zoom levels,
 			// adjust the center point in respect to the scaling point
 			if (scaleDiffInt != 0) {
-				Matrix m = new Matrix();
-				m.setScale(1 / mMultiTouccrollTo((int) pts[0], hScalePoint.x,
+				Matrix m = new Matrix();hScale != 1.0f) {
+			final float scaleDiffFloat = (float) (Math.log(mMultiTouchScale
 						mMultiTouchScalePoint.y);
 				m.postRotate(-mapOrientation, mProjection.getScreenRect().centerX(), mProjection
 						.getScreenRect().centerY());
@@ -1163,8 +1165,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 				pts[0] = getScrollX();
 				pts[1] = getScrollY();
 				m.mapPoints(pts);
-				setScrollX((int) pts[0]);
-				setScrollY((int) pts[1]);
+				scrollTo((int) pts[0], (int) pts[1]);
 			}
 
 			// Adjust the zoomLevel
@@ -1212,8 +1213,9 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		this.checkZoomButtons();
 	}
 
-	public void setMultiTouchControls(final boolean on) {
-		mMultiTouchController = on ? new MultiTouchController<Object>(this, false) : null;
+	public void setMultiTouchControls(final boolean on) {ate void checkZoomButtons() {
+		this.mZoomController.setZoomInEnabled(canZoomIn());
+	
 	}
 
 	private ITileSource getTileSourceFromAttributes(final AttributeSet aAttributeSet) {
@@ -1228,7 +1230,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 					logger.info("Using tile source specified in layout attributes: " + r);
 					tileSource = r;
 				} catch (final IllegalArgumentException e) {
-					logger.warn("Invalid tile souce specified in layout attributes: " + tileSource);
+					logger.warn("Invalid tile source specified in layout attributes: " + tileSource);
 				}
 			}
 		}
@@ -1251,21 +1253,30 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	/**
-	 * A Projection serves to translate between the coordinate system of x/y on-screen pixel
-	 * coordinates and that of latitude/longitude points on the surface of the earth. You obtain a
-	 * Projection from MapView.getProjection(). You should not hold on to this object for more than
+	/**" + style);
+				((IStyledTileSource<?>) tileSource).setStyle(style);
+			}
+		}
+
+		logger.in
+	 * coordinates and that of latitude/longitude points on the surface of the earth. You obtain a================================
+	// Inner and Anonymous Classes
+	// ============================
 	 * one draw, since the projection of the map could change. <br />
 	 * <br />
-	 * <I>Screen coordinates</I> are in the coordinate system of the screen's Canvas. The origin is
-	 * in the center of the plane. <I>Screen coordinates</I> are appropriate for using to draw to
+	 * <I>Screen coordinates</I> are in the coordinate system of the screen's Canvas. The origin ispoints on the surface of the earth. You obtain a
+	 * Projection from MapView.getProjection(). Y
 	 * the screen.<br />
+	 * <br />ect for more than
+	 * one draw, since the projection of the map could change. <br />
 	 * <br />
-	 * <I>Map coordinates</I> are in the coordinate system of the standard Mercator projection. The
+	
 	 * origin is in the upper-left corner of the plane. <I>Map coordinates</I> are appropriate for
 	 * use in the TileSystem class.<br />
+	 * <br />tes</I> are appropriate for using to draw to
+	 * the screen.<br />
 	 * <br />
-	 * <I>Intermediate coordinates</I> are used to cache the computationally heavy part of the
+	 * <I>Map coo
 	 * projection. They aren't suitable for use until translated into <I>screen coordinates</I> or
 	 * <I>map coordinates</I>.
 	 *
@@ -1287,13 +1298,18 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 
 		private Projection() {
 
-			/*
-			 * Do some calculations and drag attributes to local variables to save some performance.
+			/* / 2;
+		private final int offsetX = -worldSize_2;
+		private final int offsetY = -worldSize_2
 			 */
 			mZoomLevelProjection = MapView.this.mZoomLevel;
 			mBoundingBoxProjection = MapView.this.getBoundingBox();
-			mScreenRectProjection = MapView.this.getScreenRect(null);
-			mIntrinsicScreenRectProjection = MapView.this.getIntrinsicScreenRect(null);
+			mScreenRectProjection = MapView.this.getScreenRect(null);enRectProjection;
+
+		private Projection() {
+
+			/*
+			 * Do some calculations a
 		}
 
 		public int getZoomLevel() {
@@ -1321,8 +1337,12 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		}
 
 		/**
-		 * @deprecated Use
-		 *             <code>Point out = TileSystem.PixelXYToTileXY(screenRect.centerX(), screenRect.centerY(), null);</code>
+		 * @deprecated UseenRect() {
+			return mScreenRectProjection;
+		}
+
+		public Rect getIntrinsicScreenRect() {
+			return mIntrinsicScreenRect
 		 *             instead.
 		 */
 		@Deprecated
@@ -1332,14 +1352,19 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		}
 
 		/**
-		 * @deprecated Use
-		 *             <code>final Point out = TileSystem.TileXYToPixelXY(centerMapTileCoords.x, centerMapTileCoords.y, null);</code>
+		 * @deprecated Use= TileSystem.PixelXYToTileXY(screenRect.centerX(), screenRect.centerY(), null);</code>
+		 *             instead.
+		 */
+		@Deprec
 		 *             instead.
 		 */
 		@Deprecated
 		public Point getUpperLeftCornerOfCenterMapTile() {
-			final Point centerMapTileCoords = getCenterMapTileCoords();
-			return TileSystem.TileXYToPixelXY(centerMapTileCoords.x, centerMapTileCoords.y, null);
+			final Point centerMapTileCoords = getCenterMapTileCoords();	}
+
+		/**
+		 * @deprecated Use
+		 *             <code>final Point out = TileSystem.TileXYT
 		}
 
 		/**
@@ -1368,8 +1393,18 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		 * @param in
 		 *            the GeoPoint you want the <I>screen coordinates</I> of
 		 * @param reuse
-		 *            just pass null if you do not have a Point to be 'recycled'.
-		 * @return the Point containing the <I>screen coordinates</I> of the GeoPoint passed.
+			}
+			return out;
+		}
+
+		/**
+		 * Performs only the first computationallyght_2);
+			out.offset(getScrollX(), getScrollY());
+			return out;
+		}
+
+		/**
+		 * Conver
 		 */
 		public Point toMapPixels(final IGeoPoint in, final Point reuse) {
 			final Point out = reuse != null ? reuse : new Point();
@@ -1382,8 +1417,9 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 				Math.abs(out.x - TileSystem.MapSize(getZoomLevel()) - getScrollX())) {
 				out.x -= TileSystem.MapSize(getZoomLevel());
 			}
-			if (Math.abs(out.y - getScrollY()) >
-				Math.abs(out.y - TileSystem.MapSize(getZoomLevel()) - getScrollY())) {
+			if (Math.abs(out.y - getScrollY()) >tudeE6() / 1E6,
+							in.getLongitudeE6() / 1E6,
+							getZoomLevel(), ou
 				out.y -= TileSystem.MapSize(getZoomLevel());
 			}
 			return out;
@@ -1398,7 +1434,12 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		 * @param longitudeE6
 		 *            the longitude of the point
 		 * @param reuse
-		 *            just pass null if you do not have a Point to be 'recycled'.
+			}
+			return out;
+		}
+
+		/**
+		 * Performs only the first computationally
 		 * @return intermediate value to be stored and passed to toMapPixelsTranslated.
 		 */
 		public Point toMapPixelsProjected(final int latituteE6, final int longitudeE6,
@@ -1410,27 +1451,39 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 			return out;
 		}
 
-		/**
-		 * Performs the second computationally light part of the projection. Returns results in
+		/**o toMapPixelsTranslated.
+		 */
+		public Point toMapPixelsProjected(final int latituteE6, f
 		 * <I>screen coordinates</I>.
 		 *
 		 * @param in
 		 *            the Point calculated by the toMapPixelsProjected
 		 * @param reuse
-		 *            just pass null if you do not have a Point to be 'recycled'.
-		 * @return the Point containing the <I>Screen coordinates</I> of the initial GeoPoint passed
-		 *         to the toMapPixelsProjected.
-		 */
-		public Point toMapPixelsTranslated(final Point in, final Point reuse) {
-			final Point out = reuse != null ? reuse : new Point();
-
-			final int zoomDifference = MAXIMUM_ZOOMLEVEL - getZoomLevel();
-			out.set((in.x >> zoomDifference) + offsetX, (in.y >> zoomDifference) + offsetY);
+			}
 			return out;
 		}
 
 		/**
-		 * Translates a rectangle from <I>screen coordinates</I> to <I>intermediate coordinates</I>.
+		 * Performs only the first computationallyurn out;
+		}
+
+		/**
+		 * Performs the second computationally light part of the projection. Retu
+		 *         to the toMapPixelsProjected.
+		 */	 *
+		 * @param in
+		 *            the Point calculated by the toMapPixels
+			final Point out = reuse != null ? reuse : new Point();
+if you do not have a Point to be 'recycled'.
+		 * @return the Poin
+			out.set((in.x >> zoomDifference) + offsetX, (in.y >> zoomDifference) + offsetY);
+			return out;
+		}
+
+		/**cted.
+		 */
+		public Point toMapPixelsTranslated(final Point in, final Point reuse) {
+			final 
 		 *
 		 * @param in
 		 *            the rectangle in <I>screen coordinates</I>
@@ -1438,8 +1491,8 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		 */
 		public Rect fromPixelsToProjected(final Rect in) {
 			final Rect result = new Rect();
-
-			final int zoomDifference = MAXIMUM_ZOOMLEVEL - getZoomLevel();
+if you do not have a Point to be 'recycled'.
+		 * @return the Poin
 
 			final int x0 = in.left - offsetX << zoomDifference;
 			final int x1 = in.right - offsetX << zoomDifference;
@@ -1478,8 +1531,9 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 			rect.left = reuse.x;
 			rect.top = reuse.y;
 
-			toMapPixels(
-					new GeoPoint(pBoundingBoxE6.getLatSouthE6(), pBoundingBoxE6.getLonEastE6()),
+			toMapPixels(resently used
+		public Rect toPixels(final BoundingBoxE6 pBoundingBoxE6) {
+			fina
 					reuse);
 			rect.right = reuse.x;
 			rect.bottom = reuse.y;
@@ -1493,13 +1547,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 		}
 
 		@Override
-		public Point toPixels(final IGeoPoint
-			// Stop scrolling if we are in the middle of a fling!
-			if (mIsFlinging) {
-				mScroller.abortAnimation();
-				mIsFlinging = false;
-			}
-t in, final Point out) {
+		public Point toPixels(final IGeoPoint in, final Point out) {
 			return toMapPixels(in, out);
 		}
 
@@ -1513,6 +1561,13 @@ t in, final Point out) {
 
 		@Override
 		public boolean onDown(final MotionEvent e) {
+
+			// Stop scrolling if we are in the middle of a fling!
+			if (mIsFlinging) {
+				mScroller.abortAnimation();
+				mIsFlinging = false;
+			}
+
 			if (MapView.this.getOverlayManager().onDown(e, MapView.this)) {
 				return true;
 			}
@@ -1521,8 +1576,12 @@ t in, final Point out) {
 			return true;
 		}
 
-		@Override
-		publicIsFlinging = truepublic boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX,
+		@Override	}
+	}
+
+	private class MapViewGestureDetectorListener implements OnGestureListener {
+
+		@Over
 				final float velocityY) {
 			if (MapView.this.getOverlayManager()
 					.onFling(e1, e2, velocityX, velocityY, MapView.this)) {
@@ -1530,6 +1589,7 @@ t in, final Point out) {
 			}
 
 			final int worldSize = TileSystem.MapSize(MapView.this.getZoomLevel(false));
+			mIsFlinging = true;
 			mScroller.fling(getScrollX(), getScrollY(), (int) -velocityX, (int) -velocityY,
 					-worldSize, worldSize, -worldSize, worldSize);
 			return true;
@@ -1640,33 +1700,37 @@ t in, final Point out) {
 		 * will at the top right the View.
 		 */
 		public static final int TOP_RIGHT = 3;
-		/**
-		 * Special value for the alignment requested by a View. CENTER_LEFT means that the location
+		/**w. CENTER_LEFT means that the location
+		 * will at the center lefLEFT means that the location
 		 * will at the center left the View.
 		 */
 		public static final int CENTER_LEFT = 4;
-		/**
-		 * Special value for the alignment requested by a View. CENTER means that the location will
+		/**w. CENTER_LEFT means that the location
+		 * will at the center le means that the location will
 		 * be centered at the center of the View.
 		 */
 		public static final int CENTER = 5;
-		/**
-		 * Special value for the alignment requested by a View. CENTER_RIGHT means that the location
+		/**w. CENTER_LEFT means that the location
+		 * will at the center left the View.
+		 */
+		public st
 		 * will at the center right the View.
 		 */
 		public static final int CENTER_RIGHT = 6;
-		/**
-		 * Special value for the alignment requested by a View. BOTTOM_LEFT means that the location
+		/**CENTER means that the location will
+		 * be centered at the center of the View.
+		 */
+		public
 		 * will be at the bottom left of the View.
 		 */
 		public static final int BOTTOM_LEFT = 7;
-		/**
-		 * Special value for the alignment requested by a View. BOTTOM_CENTER means that the
+		/**CENTER means that the location will
+		 * be centered at the centerCENTER means that the
 		 * location will be centered at the bottom of the view.
 		 */
 		public static final int BOTTOM_CENTER = 8;
-		/**
-		 * Special value for the alignment requested by a View. BOTTOM_RIGHT means that the location
+		/**CENTER means that the location will
+		 * be centered at the centerRIGHT means that the location
 		 * will be at the bottom right of the View.
 		 */
 		public static final int BOTTOM_RIGHT = 9;
@@ -1686,23 +1750,28 @@ t in, final Point out) {
 		/**
 		 * Creates a new set of layout parameters with the specified width, height and location.
 		 *
-		 * @param width
-		 *            the width, either {@link #FILL_PARENT}, {@link #WRAP_CONTENT} or a fixed size
+		 * @param widthe map view.
+		 */
+		public IGeoPoint geoPoint;
+
+		/**
+		 * The alignment the alignment of the 
 		 *            in pixels
 		 * @param height
 		 *            the height, either {@link #FILL_PARENT}, {@link #WRAP_CONTENT} or a fixed size
 		 *            in pixels
 		 * @param geoPoint
 		 *            the location of the child within the map view
-		 * @param alignment
-		 *            the alignment of the view compared to the location {@link #BOTTOM_CENTER},
+		 * @param alignmentLL_PARENT}, {@link #WRAP_CONTENT} or a fixed size
+		 *            in pixels
+		 * @param hei
 		 *            {@link #BOTTOM_LEFT}, {@link #BOTTOM_RIGHT} {@link #TOP_CENTER},
 		 *            {@link #TOP_LEFT}, {@link #TOP_RIGHT}
 		 * @param offsetX
 		 *            the additional X offset from the alignment location to draw the child within
 		 *            the map view
-		 * @param offsetY
-		 *            the additional Y offset from the alignment location to draw the child within
+		 * @param offsetY{@link #BOTTOM_CENTER},
+		 *            {@link #BOTTOM_LEFT}, {@link #BOTTOM_RIGHT} {@link #T
 		 *            the map view
 		 */
 		public LayoutParams(final int width, final int height, final IGeoPoint geoPoint,
@@ -1718,12 +1787,29 @@ t in, final Point out) {
 			this.offsetY = offsetY;
 		}
 
-		/**
-		 * Since we cannot use XML files in this project this constructor is useless. Creates a new
+		/** IGeoPoint geoPoint,
+				final int alignment, final int offsetX, final int offsetY) {
+			super
 		 * set of layout parameters. The values are extracted from the supplied attributes set and
 		 * context.
 		 *
 		 * @param c
 		 *            the application environment
 		 * @param attrs
-		 *            the set of attributes fom which to extract t
+		 *            the set of attributes fom which to extract the layout parameters values
+		 */
+		public LayoutParams(final Context c, final AttributeSet attrs) {
+			super(c, attrs);
+			this.geoPoint = new GeoPoint(0, 0);
+			this.alignment = BOTTOM_CENTER;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public LayoutParams(final ViewGroup.LayoutParams source) {
+			super(source);
+		}
+	}
+
+}
