@@ -1058,10 +1058,8 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 
 		/* rotate Canvas */), mProjection
 					.getScreenRect().centerY());
-		} else {
-			c.getMatrix(mMatrix);
-			mMatri
-				.centerY());
+		} elsexactCenterX(), mProjection
+				.getScreenRect().exactCenterY());
 
 		/* Draw background */
 		// c.drawColor(mBackgroundColor);
