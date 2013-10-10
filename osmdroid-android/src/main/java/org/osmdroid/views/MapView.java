@@ -1366,13 +1366,22 @@ if (this.isAnimating()) {
 							getZoomLevel(), out);
 			out.offset(offsetX, offsetY);
 			if (Math.abs(out.x - getScrollX()) >
-				Math.abs(out.x - TileSystem.MapSize(getZoomLevel()) - getScrollX())) {
+					Math.abs(out.x - TileSystem.MapSize(getZoomLevel()) - getScrollX())) {
 				out.x -= TileSystem.MapSize(getZoomLevel());
 			}
-			if (Math.abs(out.y - getScrollY()) >tudeE6() / 1E6,
+			if (Math.abs(out.x - getScrollX()) >
+					Math.abs(out.x + TileSystem.MapSize(getZoomLevel()) - getScrollX())) {
+				out.x += TileSystem.MapSize(getZoomLevel());
+			}
+			if (Math.abs(out.y - getScrollY()) >
+	udeE6() / 1E6,
 							in.getLongitudeE6() / 1E6,
 							getZoomLevel(), ou
 				out.y -= TileSystem.MapSize(getZoomLevel());
+			}
+			if (Math.abs(out.y - getScrollY()) >
+					Math.abs(out.y + TileSystem.MapSize(getZoomLevel()) - getScrollY())) {
+				out.y += TileSystem.MapSize(getZoomLevel());
 			}
 			return out;
 		}
