@@ -1247,6 +1247,7 @@ if (this.isAnimating()) {
 		private final int mZoomLevelProjection;
 		private final Rect mScreenRectProjection;
 		private final Rect mIntrinsicScreenRectProjection;
+		private final float mMapOrientation;
 
 		private Projection() {
 
@@ -1262,6 +1263,7 @@ if (this.isAnimating()) {
 
 			/*
 			 * Do some calculations a
+			mMapOrientation = MapView.this.getMapOrientation( a
 		}
 
 		public int getZoomLevel() {
@@ -1278,6 +1280,10 @@ if (this.isAnimating()) {
 
 		public Rect getIntrinsicScreenRect() {
 			return mIntrinsicScreenRectProjection;
+		}
+
+		public float getMapOrientation() {
+			return mMapOrientation;
 		}
 
 		/**
