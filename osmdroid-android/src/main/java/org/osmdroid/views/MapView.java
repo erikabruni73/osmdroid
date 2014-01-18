@@ -348,7 +348,7 @@ public class MapView extends ViewGroup implements IMapView, MapViewConstants,
 			final IGeoPoint centerGeoPoint = TileSystem.PixelXYToLatLong(getScrollX()
 					+ worldSize_current_2, getScrollY() + worldSize_current_2, curZoomLevel, null);
 			final Point centerPoint = TileSystem.LatLongToPixelXY(
-					centerGeoPoint.getLatitudeE6() / 1E6, centerGeoPoint.getLongitudeE6() / 1E6,
+					centerGeoPoint.getLatitude(), centerGeoPoint.getLongitude(),
 					newZoomLevel, null);
 			scrollTo(centerPoint.x - worldSize_new_2, centerPoint.y - worldSize_new_2);
 		} else if (newZoomLevel < curZoomLevel) {
@@ -1367,8 +1367,8 @@ if (this.isAnimating()) {
 		public Point toMapPixels(final IGeoPoint in, final Point reuse) {
 			final Point out = reuse != null ? reuse : new Point();
 			TileSystem.LatLongToPixelXY(
-							in.getLatitudeE6() / 1E6,
-							in.getLongitudeE6() / 1E6,
+							in.getLatitude(),
+							in.getLongitude(),
 							getZoomLevel(), out);
 			out.offset(offsetX, offsetY);
 			if (Math.abs(out.x - getScrollX()) >
@@ -1409,12 +1409,10 @@ if (this.isAnimating()) {
 		 * Performs only the first computationally
 		 * @return intermediate value to be stored and passed to toMapPixelsTranslated.
 		 */
-		public Point toMapPixelsProjected(final int latituteE6, final int longitudeE6,
-				final Point reuse) {
+		public Point toMapPixelsProjected(final int latituteE6, final int longitudeE6, final Point reuse) {
 			final Point out = reuse != null ? reuse : new Point();
 
-			TileSystem
-					.LatLongToPixelXY(latituteE6 / 1E6, longitudeE6 / 1E6, MAXIMUM_ZOOMLEVEL, out);
+			TileSystem.LatLongToPixelXY(latituteE6 * 1E-6, longitudeE6 * 1E-6, MAXIMUM_ZOOMLEVEL, out);
 			return out;
 		}
 
